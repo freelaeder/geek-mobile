@@ -2,46 +2,54 @@
 import {Link} from "react-router-dom";
 import {GeekIcon} from "@shared/geekIcon";
 import styles from '@styles/mine.module.less'
+import {useRequestUserQuery} from "@service/userEndpoints";
+import Loading from "@shared/loading";
+
 export default function Mine() {
+    const {data, isLoading, isSuccess, isError} = useRequestUserQuery(undefined)
+    if (isLoading) return <Loading/>
+    if (isError) return <div>网络异常</div>
     return (
         <div className={styles.page}>
             {/* 个人资料 - 开始 */}
-            <div className={styles.profile}>
-                {/* 个人信息 - 开始 */}
-                <div className={styles.info}>
-                    <div className={styles.avatar}>
-                        <img
-                            src="http://toutiao.itheima.net/images/user_head.jpg"
-                            alt="avatar"
-                        />
+            {
+                isSuccess && <div className={styles.profile}>
+                    {/* 个人信息 - 开始 */}
+                    <div className={styles.info}>
+                        <div className={styles.avatar}>
+                            <img
+                                src={data.data.photo}
+                                alt="avatar"
+                            />
+                        </div>
+                        <div className={styles.name}>{data.data.name}</div>
+                        <Link className={styles.link} to="/">
+                            个人信息 &gt;
+                        </Link>
                     </div>
-                    <div className={styles.name}>油炸小饭团</div>
-                    <Link className={styles.link} to="/">
-                        个人信息 &gt;
-                    </Link>
+                    {/* 个人信息 - 结束*/}
+                    {/* 统计数据 - 开始 */}
+                    <div className={styles.data}>
+                        <Link to="/">
+                            <span>{data.data.art_count}</span>
+                            <span>动态</span>
+                        </Link>
+                        <Link to="/">
+                            <span>{data.data.follow_count}</span>
+                            <span>关注</span>
+                        </Link>
+                        <Link to="/">
+                            <span>{data.data.fans_count}</span>
+                            <span>粉丝</span>
+                        </Link>
+                        <Link to="/">
+                            <span>{data.data.like_count}</span>
+                            <span>被赞</span>
+                        </Link>
+                    </div>
+                    {/* 统计数据 - 结束 */}
                 </div>
-                {/* 个人信息 - 结束*/}
-                {/* 统计数据 - 开始 */}
-                <div className={styles.data}>
-                    <Link to="/">
-                        <span>0</span>
-                        <span>动态</span>
-                    </Link>
-                    <Link to="/">
-                        <span>0</span>
-                        <span>关注</span>
-                    </Link>
-                    <Link to="/">
-                        <span>0</span>
-                        <span>粉丝</span>
-                    </Link>
-                    <Link to="/">
-                        <span>0</span>
-                        <span>被赞</span>
-                    </Link>
-                </div>
-                {/* 统计数据 - 结束 */}
-            </div>
+            }
             {/* 个人资料 - 结束 */}
             {/* 按钮区域 - 开始 */}
             <div className={`${styles.button} ${styles.pos}`}>
