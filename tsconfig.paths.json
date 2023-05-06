@@ -10,7 +10,8 @@
       "@service/*": ["./src/store/service/*"],
       "@middlewares/*":["./src/store/middlewares/*"],
       "@styles/*": ["./src/assets/styles/*"],
-      "@images/*": ["./src/assets/images/*"]
+      "@images/*": ["./src/assets/images/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   }
 }

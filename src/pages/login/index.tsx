@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from "@shared/header";
 import Back from "@shared/back";
 import styles from '@styles/login.module.less'
 import {z} from "zod";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
+import classNames from "classnames";
+import {useLoginMutation} from "@service/authEndpoints";
+import {useLocation, useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
+import SendCodeMsg from "@pages/login/widgets/sendMsgCode";
 
-interface LoginFormState {
+export interface LoginFormState {
     code: string;
     mobile: string
 }
@@ -23,21 +28,50 @@ const schema = z.object({
 })
 
 function LoginPage() {
-
-    const {register, handleSubmit, formState: {errors}} = useForm<LoginFormState>({
+    const navigate = useNavigate()
+    const location = useLocation()
+    const {register, handleSubmit, formState: {errors, isValid},getFieldState,getValues} = useForm<LoginFormState>({
         // 在用户输入的过程中实时触发验证
         mode: 'onChange',
         // 设置表单验证器
         resolver: zodResolver(schema),
         // 默认值
-        defaultValues: {mobile: '', code: ''}
+        defaultValues: {mobile: '13911111111', code: '246810'}
 
     })
-
-    const updateForm:SubmitHandler<LoginFormState> = (state) => {
-        console.log(state)
+    const [login, {isSuccess, error}] = useLoginMutation()
+    const updateForm: SubmitHandler<LoginFormState> = (state) => {
+        login(state)
+            // 返回原始的
+            // 此处若不调用 unwrap 方法, 该 Promise 总是返回 fulfilled 状态
+            .unwrap()
+            .then((res) => {
+                toast.success('登录成功');
+                navigate(location.state?.form || '/' )
+            }).catch((error) => {
+            if (typeof error !== 'undefined' && 'status' in error) {
+                const response = error.data as GeekResponse<null>;
+                toast.error(response.message)
+            }
+        })
     }
 
+    // 登录成功
+    // useEffect(() => {
+    //     if (isSuccess) {
+    //         toast.success('登录成功');
+    //         navigate('/')
+    //     }
+    // }, [isSuccess, navigate])
+    //
+
+    // // 登录失败
+    // useEffect(() => {
+    //     if(typeof error !== 'undefined' && 'status' in error ){
+    //         const response = error.data as GeekResponse<null>;
+    //         toast.error(response.message)
+    //     }
+    // },[error])
     return (
         <div className={styles.login_page}>
             <Header title={""} left={<Back/>}/>
@@ -52,13 +86,13 @@ function LoginPage() {
                 <div className={styles.form_item}>
                     <input {...register('code')} type="text" placeholder="请输入验证码"/>
                     {/* 如果验证码正在发送, className={styles.active} */}
-                    <button type="button">发送验证码</button>
+                    <SendCodeMsg  getFieldState={getFieldState} getValues={getValues}  />
                     {
                         errors.code && <p className={styles.error_message}>{errors.code.message}</p>
                     }
 
                 </div>
-                <button className={styles.login_button}>登录</button>
+                <button className={classNames(styles.login_button, {[styles.disabled]: !isValid})}>登录</button>
             </form>
         </div>
     );
