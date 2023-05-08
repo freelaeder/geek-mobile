@@ -16,6 +16,7 @@ const authApiService = apiService.injectEndpoints({
             async onQueryStarted(arg, api) {
                 // 获取服务器返回的数据
                 const res = await api.queryFulfilled
+
                 //保存store
                 api.dispatch(saveCredentials(res.data.data))
             }

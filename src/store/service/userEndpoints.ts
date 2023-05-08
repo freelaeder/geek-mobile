@@ -8,9 +8,9 @@ const userApiService = apiService.injectEndpoints({
         requestUser: build.query<UserResponse, undefined>({
             query: () => ({
                 url: '/user',
-                headers: {
-                    authorization: `Bearer ${store.getState().credentials.token}`
-                }
+                // headers: {
+                //     authorization: `Bearer ${store.getState().credentials.token}`,
+                // }
             })
         })
     })

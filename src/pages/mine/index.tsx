@@ -8,7 +8,7 @@ import Loading from "@shared/loading";
 export default function Mine() {
     const {data, isLoading, isSuccess, isError} = useRequestUserQuery(undefined)
     if (isLoading) return <Loading/>
-    if (isError) return <div>网络异常</div>
+    if (isError) return <div>身份已过期，请重新登录</div>
     return (
         <div className={styles.page}>
             {/* 个人资料 - 开始 */}
