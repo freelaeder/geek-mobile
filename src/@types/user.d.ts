@@ -17,3 +17,11 @@ type ProfileResponse = GeekResponse<{
     gender:string;
     birthday:string
 }>
+
+// 修改用户数据时可以传递的参数
+interface UserProfile {
+    name:string;
+    gender:string;
+    birthday:string;
+    intro:string
+}

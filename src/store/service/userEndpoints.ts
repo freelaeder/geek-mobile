@@ -31,10 +31,17 @@ const userApiService = apiService.enhanceEndpoints({
             invalidatesTags: ['profile']
         }),
         // 修改名称
-
+        updateProfile:build.mutation<GeekResponse<null>,Partial<UserProfile>>({
+            query:(body) => ({
+                url:'/user/profile',
+                method: "PATCH",
+                body
+            }),
+            invalidatesTags:['profile']
+        })
 
     })
 })
 
 
-export const {useRequestUserQuery, useRequestProfileQuery, useUploadAvatarMutation} = userApiService
+export const {useRequestUserQuery, useRequestProfileQuery, useUploadAvatarMutation,useUpdateProfileMutation} = userApiService

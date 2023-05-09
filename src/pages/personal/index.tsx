@@ -11,7 +11,6 @@ import Nickname from "@pages/personal/widgets/nickname";
 export default function Personal() {
 
     const {data, isLoading, isSuccess} = useRequestProfileQuery(undefined)
-    console.log(data)
     if (isLoading) return <Loading/>
 
     return (
