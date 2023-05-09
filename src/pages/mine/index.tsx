@@ -23,7 +23,7 @@ export default function Mine() {
                             />
                         </div>
                         <div className={styles.name}>{data.data.name}</div>
-                        <Link className={styles.link} to="/">
+                        <Link className={styles.link} to="/person">
                             个人信息 &gt;
                         </Link>
                     </div>

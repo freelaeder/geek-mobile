@@ -8,3 +8,12 @@ type UserResponse = GeekResponse<{
     fans_count: number;
     like_count: number;
 }>;
+
+type ProfileResponse = GeekResponse<{
+    id:string;
+    name:string;
+    photo:string;
+    mobile:string;
+    gender:string;
+    birthday:string
+}>

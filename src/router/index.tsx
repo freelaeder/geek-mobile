@@ -6,6 +6,7 @@ import Question from "@pages/question";
 import Video from "@pages/video";
 import Mine from "@pages/mine";
 import AuthRoute from "@router/authRoute";
+import Personal from "@pages/personal";
 
 
 export const router = createBrowserRouter([
@@ -26,7 +27,10 @@ export const router = createBrowserRouter([
 
         ]
     },
-    {path: '/login', element: <LoginPage/>}
+    {path: '/login', element: <LoginPage/>},
+    {
+        path: '/person', element: <Personal/>
+    }
 ])
 
 
