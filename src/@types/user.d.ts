@@ -15,14 +15,14 @@ type ProfileResponse = GeekResponse<{
     name:string;
     photo:string;
     mobile:string;
-    gender:string;
+    gender:0 | 1;
     birthday:string
 }>
 
 // 修改用户数据时可以传递的参数
 interface UserProfile {
     name:string;
-    gender:string;
+    gender:0 | 1;
     birthday:string;
     intro:string
 }

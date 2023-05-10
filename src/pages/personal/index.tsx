@@ -8,6 +8,7 @@ import Loading from "@shared/loading";
 import Avatar from "@pages/personal/avatar";
 import Nickname from "@pages/personal/widgets/nickname";
 import Intro from "@pages/personal/widgets/intro";
+import Gender from "@pages/personal/widgets/gender";
 
 export default function Personal() {
 
@@ -26,14 +27,8 @@ export default function Personal() {
                             <Intro intro={data.data.intro} />
                         </ul>
                         <ul className={styles.options}>
-                            <li>
-                                <span>性别</span>
-                                <div className={styles.value}>
-                                    <span>{data.data.gender === '1' ? '男' : '女' }</span>
-                                    <GeekIcon type="iconbtn_right" className={styles.icon}/>
-                                </div>
-                            </li>
-                            <li>
+                            <Gender gender={data.data.gender} />
+                             <li>
                                 <span>生日</span>
                                 <div className={styles.value}>
                                     <span>{data.data.birthday}</span>
