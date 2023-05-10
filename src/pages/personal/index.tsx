@@ -9,6 +9,7 @@ import Avatar from "@pages/personal/avatar";
 import Nickname from "@pages/personal/widgets/nickname";
 import Intro from "@pages/personal/widgets/intro";
 import Gender from "@pages/personal/widgets/gender";
+import Birthday from "@pages/personal/widgets/birthday";
 
 export default function Personal() {
 
@@ -28,13 +29,7 @@ export default function Personal() {
                         </ul>
                         <ul className={styles.options}>
                             <Gender gender={data.data.gender} />
-                             <li>
-                                <span>生日</span>
-                                <div className={styles.value}>
-                                    <span>{data.data.birthday}</span>
-                                    <GeekIcon type="iconbtn_right" className={styles.icon}/>
-                                </div>
-                            </li>
+                            <Birthday birthday={data.data.birthday} />
                         </ul>
                         <button className={styles.logout}>退出登录</button>
                     </div>
