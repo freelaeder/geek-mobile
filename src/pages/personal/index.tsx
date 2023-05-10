@@ -7,6 +7,7 @@ import {useRequestProfileQuery} from "@service/userEndpoints";
 import Loading from "@shared/loading";
 import Avatar from "@pages/personal/avatar";
 import Nickname from "@pages/personal/widgets/nickname";
+import Intro from "@pages/personal/widgets/intro";
 
 export default function Personal() {
 
@@ -22,13 +23,7 @@ export default function Personal() {
                         <ul className={styles.options}>
                             <Avatar avatar={data.data.photo} />
                             <Nickname name={data.data.name} />
-                            <li>
-                                <span>简介</span>
-                                <div className={styles.value}>
-                                    <span>简介</span>
-                                    <GeekIcon type="iconbtn_right" className={styles.icon}/>
-                                </div>
-                            </li>
+                            <Intro intro={data.data.intro} />
                         </ul>
                         <ul className={styles.options}>
                             <li>

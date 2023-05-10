@@ -10,6 +10,7 @@ type UserResponse = GeekResponse<{
 }>;
 
 type ProfileResponse = GeekResponse<{
+    intro: string;
     id:string;
     name:string;
     photo:string;
