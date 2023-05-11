@@ -5,16 +5,22 @@ import {credentialsReducer} from "@slice/credentials";
 import {persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "redux-persist";
-// 持久化
+import {guestChannelSlice} from "@slice/guestChannel";
+// 持久化 - token
 const persistCredentialsReducer = persistReducer(
     {key: 'credentialsReducer', storage},
     credentialsReducer.reducer
+)
+// 持久化 - guestChannelSlice
+const persistChannelReducer = persistReducer(
+    {key: 'guestChannelsReducer', storage}, guestChannelSlice.reducer
 )
 export const store = configureStore({
     devTools: process.env.NODE_ENV !== 'production',
     reducer: {
         [apiService.reducerPath]: apiService.reducer,
-        [credentialsReducer.name]: persistCredentialsReducer
+        [credentialsReducer.name]: persistCredentialsReducer,
+        [guestChannelSlice.name]: persistChannelReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         // serializableCheck:false 第一种解决

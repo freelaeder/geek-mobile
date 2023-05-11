@@ -15,7 +15,7 @@ export default function UpdateAvatar({slideRef}: Props) {
     // 获取用户input
     const fileRef = useRef<HTMLInputElement | null>(null)
     // 发送请求
-    const [updateAvater, {isLoading, isError, isSuccess}] = useUploadAvatarMutation()
+    const [updateAvater, { isError, isSuccess}] = useUploadAvatarMutation()
     // 拍照或选择照片
     const trigger = (mark: 'take' | 'select') => {
         // 拍照

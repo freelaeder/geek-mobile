@@ -1,6 +1,5 @@
 // src/pages/personal/index.tsx
 import styles from "@styles/personal.module.less";
-import {GeekIcon} from "@shared/geekIcon";
 import Header from "@shared/header";
 import Back from "@shared/back";
 import {useRequestProfileQuery} from "@service/userEndpoints";
@@ -10,6 +9,7 @@ import Nickname from "@pages/personal/widgets/nickname";
 import Intro from "@pages/personal/widgets/intro";
 import Gender from "@pages/personal/widgets/gender";
 import Birthday from "@pages/personal/widgets/birthday";
+import Logout from "@pages/personal/widgets/logout";
 
 export default function Personal() {
 
@@ -31,7 +31,7 @@ export default function Personal() {
                             <Gender gender={data.data.gender} />
                             <Birthday birthday={data.data.birthday} />
                         </ul>
-                        <button className={styles.logout}>退出登录</button>
+                        <Logout />
                     </div>
                 )
             }

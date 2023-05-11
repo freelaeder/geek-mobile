@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React  from 'react';
 import Header from "@shared/header";
 import Back from "@shared/back";
 import styles from '@styles/login.module.less'
@@ -39,7 +39,7 @@ function LoginPage() {
         defaultValues: {mobile: '13911111111', code: '246810'}
 
     })
-    const [login, {isSuccess, error}] = useLoginMutation()
+    const [login] = useLoginMutation()
     const updateForm: SubmitHandler<LoginFormState> = (state) => {
         login(state)
             // 返回原始的
