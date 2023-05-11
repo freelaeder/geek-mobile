@@ -9,29 +9,7 @@ import Slide, {SlideRef} from "@pages/slide";
 import {useRef} from "react";
 import UpdateUserChannel from "@pages/home/widgets/updateUserChannel";
 
-// 模拟数据
-const channels = [
-    "推荐",
-    "HTML",
-    "开发者资讯",
-    "C++",
-    "CSS",
-    "数据库",
-    "区块链",
-    "go",
-    "产品",
-    "后端",
-    "linux",
-    "人工智能",
-    "php",
-    "javascript",
-    "架构",
-    "前端",
-    "python",
-    "java",
-    "科技动态",
-    "数码产品",
-];
+
 
 export default function Channel() {
     const token = useTypedSelector(selectToken)

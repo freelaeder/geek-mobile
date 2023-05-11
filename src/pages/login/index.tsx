@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import Header from "@shared/header";
 import Back from "@shared/back";
 import styles from '@styles/login.module.less'
@@ -30,7 +30,7 @@ const schema = z.object({
 function LoginPage() {
     const navigate = useNavigate()
     const location = useLocation()
-    const {register, handleSubmit, formState: {errors, isValid},getFieldState,getValues} = useForm<LoginFormState>({
+    const {register, handleSubmit, formState: {errors, isValid}, getFieldState, getValues} = useForm<LoginFormState>({
         // 在用户输入的过程中实时触发验证
         mode: 'onChange',
         // 设置表单验证器
@@ -45,9 +45,9 @@ function LoginPage() {
             // 返回原始的
             // 此处若不调用 unwrap 方法, 该 Promise 总是返回 fulfilled 状态
             .unwrap()
-            .then((res) => {
+            .then(() => {
                 toast.success('登录成功');
-                navigate(location.state?.form || '/' )
+                navigate(location.state?.form || '/')
             }).catch((error) => {
             if (typeof error !== 'undefined' && 'status' in error) {
                 const response = error.data as GeekResponse<null>;
@@ -86,7 +86,7 @@ function LoginPage() {
                 <div className={styles.form_item}>
                     <input {...register('code')} type="text" placeholder="请输入验证码"/>
                     {/* 如果验证码正在发送, className={styles.active} */}
-                    <SendCodeMsg  getFieldState={getFieldState} getValues={getValues}  />
+                    <SendCodeMsg getFieldState={getFieldState} getValues={getValues}/>
                     {
                         errors.code && <p className={styles.error_message}>{errors.code.message}</p>
                     }

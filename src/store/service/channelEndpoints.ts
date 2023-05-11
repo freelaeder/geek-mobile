@@ -32,6 +32,23 @@ export const channelApiService = apiService.enhanceEndpoints({
                 method: "DELETE"
             }),
             invalidatesTags: ['userChannels']
+        }),
+        // 获取所有的频道
+        requestAllChannels: build.query<ChannelResponse, undefined>({
+            query: () => ({
+                url: '/channels'
+            })
+        }),
+        // 添加用户的频道
+        addUserChannel: build.mutation<AddChannelResponse, {
+            channels: ChannelState[]
+        }>({
+            query: (body) => ({
+                url: '/user/channels',
+                method: 'PATCH',
+                body
+            }),
+            invalidatesTags: ['userChannels']
         })
     })
 })
@@ -40,5 +57,7 @@ export const channelApiService = apiService.enhanceEndpoints({
 export const {
     useRequestUserChannelsQuery,
     useLazyRequestGuestChannelsQuery,
-    useDeleteChannelMutation
+    useDeleteChannelMutation,
+    useRequestAllChannelsQuery,
+    useAddUserChannelMutation
 } = channelApiService
