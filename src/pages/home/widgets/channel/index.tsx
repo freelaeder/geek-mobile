@@ -9,12 +9,14 @@ import Slide, {SlideRef} from "@pages/slide";
 import {useRef} from "react";
 import UpdateUserChannel from "@pages/home/widgets/updateUserChannel";
 import UpdateGuestChannel from "@pages/home/widgets/updateGuestChannel";
+import {useNavigate} from "react-router-dom";
 
 
 
 export default function Channel() {
     const token = useTypedSelector(selectToken)
     const slideRef = useRef<SlideRef | null>(null)
+    const navigate = useNavigate()
     return (
         <div className={styles.container}>
             {/* 如果用户登录则渲染用户频道列表否则渲染访客频道列表 */}
@@ -24,7 +26,7 @@ export default function Channel() {
 
             <div className={styles.aside}>
                 <div className={styles.search}>
-                    <GeekIcon type={"iconbtn_search"} className={styles.search_icon}/>
+                    <GeekIcon onClick={()=> navigate('/search') } type={"iconbtn_search"} className={styles.search_icon}/>
                 </div>
                 <div onClick={() => slideRef.current?.onRender()} className={styles.menu}>
                     <GeekIcon type={"iconbtn_channel"} className={styles.channel_icon}/>

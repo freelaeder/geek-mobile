@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import styles from "@styles/channel.module.less";
 import classNames from "classnames";
 import useChannelScroll from "@hooks/useChannelScroll";
