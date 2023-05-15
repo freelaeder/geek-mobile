@@ -1,17 +1,16 @@
-// src/pages/home/widgets/updateUserChannel/index.tsx
+// src/pages/home/widgets/updateGuestChannel/index.tsx
 import styles from "@styles/edit.module.less";
 import {GeekIcon} from "@shared/geekIcon";
 import React from "react";
 import {SlideRef} from "@pages/slide";
-import SelectChannel from "@pages/home/widgets/selectChannel";
-import Unselected from "@pages/home/widgets/unselected";
+import GuestSelect from "@pages/home/widgets/updateGuestChannel/guestSelect";
+import UnGuestselected from "@pages/home/widgets/updateGuestChannel/unGuestselected";
 
 interface Props {
     slideRef: React.RefObject<SlideRef | null>;
 }
 
-export default function UpdateUserChannel({slideRef}: Props) {
-
+export default function UpdateGuestChannel({slideRef}: Props) {
     return (
         <div className={styles.container}>
             <div className={styles.close}>
@@ -20,9 +19,9 @@ export default function UpdateUserChannel({slideRef}: Props) {
                     onClick={() => slideRef.current?.onClose()}
                 />
             </div>
-            <SelectChannel slideRef={slideRef} />
+          <GuestSelect slideRef={slideRef} />
             <div className={styles.space}></div>
-            <Unselected/>
+           <UnGuestselected />
         </div>
     );
 }

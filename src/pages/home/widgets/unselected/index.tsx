@@ -8,8 +8,8 @@ import {
 import Item from "@pages/home/widgets/unselected/Item";
 
 function getRemaining(all: Channel[], user: Channel[]) {
-    const remaining = all.filter(item => !user.some(userItem => userItem.id === item.id));
-    return remaining;
+    return all.filter(item => !user.some(userItem => userItem.id === item.id));
+
 }
 
 export default function Unselected() {
@@ -20,6 +20,7 @@ export default function Unselected() {
     // 如果所有频道列表或者用户频道列表没有获取成功, 阻止程序继续运行
     if (!allSuccess || !userSuccess) return null
     const remaining = getRemaining(all.data.channels, user.data.channels)
+
 
     return (
         <>

@@ -1,5 +1,5 @@
 // src/shared/tabbar/index.tsx
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {GeekIcon} from "@shared/geekIcon";
 import styles from '@styles/tabbar.module.less'
 import classNames from "classnames";
@@ -7,7 +7,8 @@ import classNames from "classnames";
 export default function Tabbar() {
 
     const location = useLocation()
-    const isHome = location.pathname === '/'
+    const {cid} = useParams()
+    const isHome = typeof cid !== 'undefined'
     const isQuestion = location.pathname === '/question'
     const isVideo = location.pathname === '/video'
     const isMine = location.pathname === '/mine'

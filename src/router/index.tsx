@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import Home from "@pages/home";
 import LoginPage from "@pages/login";
 import MainLayout from "@shared/mainLayout";
@@ -13,8 +13,14 @@ export const router = createBrowserRouter([
     {
         path: '', element: <MainLayout/>,
         children: [
-            {index: true, element: <Home/>},
-            {path: 'home', element: <Home/>},
+            {
+                path: "",
+                element: <Navigate to={'/0'}/>,
+            },
+            {
+                path: ":cid",
+                element: <Home/>,
+            },
             {
                 path: 'question', element: <Question/>
             },

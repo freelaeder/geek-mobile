@@ -8,6 +8,7 @@ import GuestChannel from "@pages/home/widgets/guestChannel";
 import Slide, {SlideRef} from "@pages/slide";
 import {useRef} from "react";
 import UpdateUserChannel from "@pages/home/widgets/updateUserChannel";
+import UpdateGuestChannel from "@pages/home/widgets/updateGuestChannel";
 
 
 
@@ -30,7 +31,7 @@ export default function Channel() {
                 </div>
             </div>
             <Slide direction={'toRight'} ref={slideRef}>
-                {token ? <UpdateUserChannel slideRef={slideRef} /> :null }
+                {token ? <UpdateUserChannel slideRef={slideRef} /> : <UpdateGuestChannel slideRef={slideRef} /> }
             </Slide>
         </div>
     );
