@@ -10,7 +10,8 @@ interface Props {
 function SuggestionItem({item:{name}}:Props) {
     return (
         <li>
-            <GeekIcon type={"iconbtn_search"} /> {name}
+            <GeekIcon type={"iconbtn_search"} />
+            <div dangerouslySetInnerHTML={{__html:name}}></div>
         </li>
     );
 }

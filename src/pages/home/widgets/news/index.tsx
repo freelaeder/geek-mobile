@@ -1,17 +1,17 @@
 import styles from "@styles/news.module.less";
 import NewItem from "@pages/home/widgets/news/newItem";
-import {useParams} from "react-router-dom";
+import {useOutletContext, useParams} from "react-router-dom";
 import {useTypedDispatch, useTypedSelector} from "@store/index";
 import {useLazyRequestNewsQuery} from "@service/newsEndpoints";
 import {useEffect} from "react";
-import {initialChannel, saveNews, selectChannelNews} from "@slice/newsSlice";
+import {initialChannel, saveDistance, saveNews, selectChannelNews} from "@slice/newsSlice";
 import Infinite from "@shared/infinite";
+import {ScrollProps} from "@shared/mainLayout";
 
 export default function News() {
     const cid = useParams().cid!
     const dispatch = useTypedDispatch()
     const [requestNews] = useLazyRequestNewsQuery()
-    // 获取新闻列表
     // 获取新闻列表
     const channelNews = useTypedSelector(selectChannelNews(cid));
     // 发送请求
@@ -22,8 +22,18 @@ export default function News() {
             dispatch(initialChannel(cid))
         }
     }, [channelNews, cid, dispatch])
-
-    // 新闻列表加载方法
+    // 获取store中的distance
+    const distance_store = useTypedSelector(state => state.news[cid]?.distance)
+    // 获取outlet中的数据
+    const {getScrollTop, setScrollTop} = useOutletContext<ScrollProps>()
+    useEffect(() => {
+        setScrollTop(distance_store || 0)
+        return () => {
+            const scrollTop = getScrollTop()
+            dispatch(saveDistance({cid, distance: scrollTop}))
+        }
+    }, [cid, getScrollTop])
+    // loadMore()
     const loadMore = () => {
         return requestNews({
             channel_id: Number(cid),
@@ -44,13 +54,13 @@ export default function News() {
                 console.log(e)
             })
     }
-    // loadMore()
+
 
     return (
         <>
             <ul className={styles.news}>
                 {channelNews?.results.map((news) => (
-                    <NewItem news={news} key={news.art_id} />
+                    <NewItem news={news} key={news.art_id}/>
                 ))}
             </ul>
             {channelNews && (

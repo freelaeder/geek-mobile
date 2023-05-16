@@ -10,6 +10,8 @@ interface ChannelNews {
 interface ChannelNewsItem {
     results: News[];
     pre_timestamp: string | null;
+    // 记录滚动位置
+    distance: number;
 }
 
 export const newsSlice = createSlice<
@@ -22,6 +24,8 @@ export const newsSlice = createSlice<
         results: News[],
         pre_timestamp: string | null
     }>): void;
+    // 保存滚动距离
+    saveDistance(state: Draft<ChannelNews>, action: PayloadAction<{ cid: string, distance: number }>): void;
 }, 'news'
 >({
     name: 'news',
@@ -32,7 +36,7 @@ export const newsSlice = createSlice<
             state[action.payload] = {
                 results: [],
                 pre_timestamp: Date.now() + "",
-
+                distance: 0,
             };
         },
         // 保存新闻列表
@@ -42,11 +46,16 @@ export const newsSlice = createSlice<
             pre_timestamp: string | null
         }>) {
             // 获取频道 id、新闻列表、上一页数据对应的时间戳, 是否有更多数据
-            const {cid, results, pre_timestamp} = action.payload
+            const {cid, results, pre_timestamp,} = action.payload
             // 保存新闻列表·
             state[cid].results.push(...results)
             // 保存时间戳
             state[cid].pre_timestamp = pre_timestamp
+        },
+        // 保存滚动距离
+        saveDistance(state: Draft<ChannelNews>, action: PayloadAction<{ cid: string; distance: number }>) {
+            const {cid, distance} = action.payload
+            state[cid].distance = distance
         }
     }
 })
@@ -58,4 +67,4 @@ export const selectChannelNews =
         };
 
 
-export const {saveNews, initialChannel} = newsSlice.actions
+export const {saveNews, initialChannel,saveDistance} = newsSlice.actions
