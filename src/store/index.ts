@@ -8,6 +8,7 @@ import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "redux-persist";
 import {guestChannelSlice} from "@slice/guestChannel";
 import {newsSlice} from "@slice/newsSlice";
 import {searchKeySlice} from "@slice/searchKey";
+import {searchResultSlice} from "@slice/searchResultSlice";
 // 持久化 - token
 const persistCredentialsReducer = persistReducer(
     {key: 'credentialsReducer', storage},
@@ -28,7 +29,8 @@ export const store = configureStore({
         [credentialsReducer.name]: persistCredentialsReducer,
         [guestChannelSlice.name]: persistChannelReducer,
         [newsSlice.name]:newsSlice.reducer,
-        [searchKeySlice.name]:persistSearchKey
+        [searchKeySlice.name]:persistSearchKey,
+        [searchResultSlice.name]:searchResultSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         // serializableCheck:false 第一种解决

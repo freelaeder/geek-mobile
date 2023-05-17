@@ -1,83 +1,69 @@
 // src/pages/searchResult/index.tsx
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Header from "@shared/header";
 import Back from "@shared/back";
 import styles from "@styles/news.module.less";
 import css from "@styles/search-reault.module.less";
-import { Link } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {GeekIcon} from "@shared/geekIcon";
+import {useTypedDispatch, useTypedSelector} from "@store/index";
+import {clearResults, saveResults, searchSelectors} from "@slice/searchResultSlice";
+import {searchEndpoints, useLazyRequestResultQuery} from "@service/searchEndpoints";
+import NewItem from "@pages/home/widgets/news/newItem";
+import Infinite from "@shared/infinite";
 
 export default function SearchResult() {
+    // 获取路径中的params
+    const {key} = useParams()
+    // 获取全部的搜索结果
+    const searchResultList = useTypedSelector(searchSelectors.selectAll)
+    const dispatch = useTypedDispatch()
+    // 获取搜索请求
+    const [search] = useLazyRequestResultQuery()
+    // 用于存储本地存储的搜索结果的数量
+    const newAccount = useTypedSelector(searchSelectors.selectTotal)
+    // 用于记录服务端响应的搜索结果数量
+    const totalRef = useRef(0);
+    // 用于控制是否还有更多数据可以加载
+    const [hasMore, setHasMore] = useState(true);
+    // 用于记录页面
+    const [page, setPage] = useState(1);
+
+    useEffect(()=> {
+        // 每次进入清空之前的搜索结果
+        dispatch(clearResults())
+    },[dispatch])
+
+    // 加载更多
+    const loadMore = () => {
+        return search({
+            page,
+            per_page: 10,
+            q: key!
+        }).unwrap().then(res => {
+            // 保存本地
+            dispatch(saveResults(res.data.results))
+            // 更新页码
+            setPage(x => x + 1)
+            // 记录服务端响应的搜索结果总共的数量
+            totalRef.current = res.data.total_count
+            console.log(totalRef.current,'totalref')
+            console.log(newAccount,'newAccount')
+            // 是否还有更多 总数 > 现在本地
+            setHasMore(totalRef.current > newAccount )
+        })
+    }
+
     return (
+
         <div className={css.result}>
-            <Header title={"搜索结果"} left={<Back />} />
+            <Header title={"搜索结果"} left={<Back/>}/>
             <ul className={styles.news}>
-                <li>
-                    <div className={styles.main}>
-                        <Link className={styles.title} to={"/"}>
-                            小程序基础核心组件库处理Banner、图片上传、列表刷新
-                        </Link>
-                    </div>
-                    <div className={styles.secondary}>
-                        <Link to={"/"} className={styles.meta}>
-                            <span className={styles.item}>黑马程序员(改不了)</span>
-                            <span className={styles.item}>5评论</span>
-                            <span className={styles.item}>4 年内</span>
-                        </Link>
-                        <GeekIcon type={"iconbtn_channel_close"} className={styles.close} />
-                    </div>
-                </li>
-                <li className={styles.hasOnePicture}>
-                    <div className={styles.main}>
-                        <Link className={styles.title} to={"/"}>
-                            小程序基础核心组件库处理Banner、图片上传、列表刷新
-                        </Link>
-                        <Link className={styles.imgContainer} to={"/"}>
-                            <img
-                                src={"http://toutiao.itheima.net/resources/images/73.jpg"}
-                                alt=""
-                            />
-                        </Link>
-                    </div>
-                    <div className={styles.secondary}>
-                        <Link to={"/"} className={styles.meta}>
-                            <span className={styles.item}>黑马程序员(改不了)</span>
-                            <span className={styles.item}>5评论</span>
-                            <span className={styles.item}>4 年内</span>
-                        </Link>
-                        <GeekIcon type={"iconbtn_channel_close"} className={styles.close} />
-                    </div>
-                </li>
-                <li className={styles.hasMorePicture}>
-                    <div className={styles.main}>
-                        <Link className={styles.title} to={"/"}>
-                            小程序基础核心组件库处理Banner、图片上传、列表刷新
-                        </Link>
-                        <Link className={styles.imgContainer} to={"/"}>
-                            <img
-                                src={"http://toutiao.itheima.net/resources/images/79.jpg"}
-                                alt=""
-                            />
-                            <img
-                                src={"http://toutiao.itheima.net/resources/images/38.jpg"}
-                                alt=""
-                            />
-                            <img
-                                src={"http://toutiao.itheima.net/resources/images/10.jpg"}
-                                alt=""
-                            />
-                        </Link>
-                    </div>
-                    <div className={styles.secondary}>
-                        <Link to={"/"} className={styles.meta}>
-                            <span className={styles.item}>黑马程序员(改不了)</span>
-                            <span className={styles.item}>5评论</span>
-                            <span className={styles.item}>4 年内</span>
-                        </Link>
-                        <GeekIcon type={"iconbtn_channel_close"} className={styles.close} />
-                    </div>
-                </li>
+                {
+                    searchResultList.map(item => <NewItem news={item} key={item.art_id}/>)
+                }
             </ul>
+            <Infinite hasMore={hasMore} loadMore={loadMore}/>
         </div>
     );
 }

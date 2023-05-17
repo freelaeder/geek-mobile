@@ -9,9 +9,16 @@ export const searchEndpoints = apiService.injectEndpoints({
                 url:'/suggestion',
                 params:{q:key}
             })
+        }),
+        // 获取搜索结果
+        requestResult:build.query<SearchResultResponse,RequestBody>({
+            query:(params) => ({
+                url: '/search',
+                params
+            })
         })
     })
 })
 
 
-export const {useLazyRequestSuggestionQuery}  = searchEndpoints
+export const {useLazyRequestSuggestionQuery,useLazyRequestResultQuery}  = searchEndpoints
