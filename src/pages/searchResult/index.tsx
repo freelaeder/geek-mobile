@@ -4,11 +4,10 @@ import Header from "@shared/header";
 import Back from "@shared/back";
 import styles from "@styles/news.module.less";
 import css from "@styles/search-reault.module.less";
-import {Link, useParams} from "react-router-dom";
-import {GeekIcon} from "@shared/geekIcon";
+import { useParams} from "react-router-dom";
 import {useTypedDispatch, useTypedSelector} from "@store/index";
 import {clearResults, saveResults, searchSelectors} from "@slice/searchResultSlice";
-import {searchEndpoints, useLazyRequestResultQuery} from "@service/searchEndpoints";
+import { useLazyRequestResultQuery} from "@service/searchEndpoints";
 import NewItem from "@pages/home/widgets/news/newItem";
 import Infinite from "@shared/infinite";
 
