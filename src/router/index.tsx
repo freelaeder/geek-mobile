@@ -8,6 +8,7 @@ import Mine from "@pages/mine";
 import AuthRoute from "@router/authRoute";
 import Personal from "@pages/personal";
 import Search from "@pages/search";
+import SearchResult from "@pages/searchResult";
 
 
 export const router = createBrowserRouter([
@@ -40,6 +41,9 @@ export const router = createBrowserRouter([
     },
     {
         path:'/search',element:<Search />
+    },
+    {
+        path:'/search/:key',element:<SearchResult />
     }
 ])
 

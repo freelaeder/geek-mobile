@@ -32,7 +32,7 @@ export default function News() {
             const scrollTop = getScrollTop()
             dispatch(saveDistance({cid, distance: scrollTop}))
         }
-    }, [cid, getScrollTop])
+    }, [cid, dispatch, distance_store, getScrollTop, setScrollTop])
     // loadMore()
     const loadMore = () => {
         return requestNews({

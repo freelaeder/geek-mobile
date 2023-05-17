@@ -7,6 +7,7 @@ import storage from "redux-persist/lib/storage";
 import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "redux-persist";
 import {guestChannelSlice} from "@slice/guestChannel";
 import {newsSlice} from "@slice/newsSlice";
+import {searchKeySlice} from "@slice/searchKey";
 // 持久化 - token
 const persistCredentialsReducer = persistReducer(
     {key: 'credentialsReducer', storage},
@@ -16,13 +17,18 @@ const persistCredentialsReducer = persistReducer(
 const persistChannelReducer = persistReducer(
     {key: 'guestChannelsReducer', storage}, guestChannelSlice.reducer
 )
+// 持久化 搜索记录
+const persistSearchKey = persistReducer(
+    {key: 'searchKeyReducer', storage}, searchKeySlice.reducer
+)
 export const store = configureStore({
     devTools: process.env.NODE_ENV !== 'production',
     reducer: {
         [apiService.reducerPath]: apiService.reducer,
         [credentialsReducer.name]: persistCredentialsReducer,
         [guestChannelSlice.name]: persistChannelReducer,
-        [newsSlice.name]:newsSlice.reducer
+        [newsSlice.name]:newsSlice.reducer,
+        [searchKeySlice.name]:persistSearchKey
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         // serializableCheck:false 第一种解决

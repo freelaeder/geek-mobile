@@ -7,6 +7,9 @@ import Suggestion from "@pages/search/widgets/suggestion";
 import {useDebounce} from "use-debounce";
 import {searchEndpoints, useLazyRequestSuggestionQuery} from "@service/searchEndpoints";
 import {useTypedDispatch} from "@store/index";
+import SearchKey from "@pages/search/widgets/searchKey";
+import {useNavigate} from "react-router-dom";
+import {addKey} from "@slice/searchKey";
 
 export default function Search() {
     // 用户输入的值
@@ -14,25 +17,26 @@ export default function Search() {
     const dispatch = useTypedDispatch()
     // 延迟之后的值
     const [delazyValue] = useDebounce(key, 1000)
-    const [requestSuggestion,{data: suggestion }] = useLazyRequestSuggestionQuery()
+    const [requestSuggestion, {data: suggestion}] = useLazyRequestSuggestionQuery()
     // 监听防抖值的变化
     useEffect(() => {
         if (delazyValue.trim().length > 0) {
             requestSuggestion(delazyValue)
-        }else {
+        } else {
             // 否则清空已有联想值列表
             dispatch(searchEndpoints.util.resetApiState());
         }
     }, [delazyValue, dispatch, requestSuggestion])
     // 查找联想词列表是否存在
-    const hasSuggestion = useMemo<boolean>(()=> {
-        if(typeof suggestion === 'undefined') return false;
+    const hasSuggestion = useMemo<boolean>(() => {
+        if (typeof suggestion === 'undefined') return false;
         return suggestion.data.options.filter(item => item).length > 0
-    },[suggestion])
+    }, [suggestion])
     // 创建用于匹配搜索关键字的正则对象
     const reg = useMemo(() => {
         return new RegExp(delazyValue, "gi");
     }, [delazyValue]);
+    const navigate = useNavigate()
     return (
         <div className={styles.search_page}>
             <div className={styles.header}>
@@ -42,31 +46,30 @@ export default function Search() {
                     <input value={key} onChange={(event) => setKey(event.currentTarget.value)} type="search"
                            placeholder={"请输入关键字搜索"}/>
                 </div>
-                <span className={styles.search_btn}>搜索</span>
+                <span onClick={() => {
+                    if(delazyValue.trim().length > 0) {
+                        dispatch(addKey({name: delazyValue}));
+                        navigate(`/search/${delazyValue}`)
+                    }
+
+                }
+                } className={styles.search_btn}>搜索</span>
             </div>
             {
                 hasSuggestion && (
-                    <Suggestion suggestions={ suggestion!.data.options
+                    <Suggestion suggestions={suggestion!.data.options
                         .filter(item => item).map(item => ({
-                            origin:item,
-                            name:item.replace(reg,(str) => `<span>${str}</span>`)
-                        }) )
-                    } />
+                            origin: item,
+                            name: item.replace(reg, (str) => `<span class="search-span" >${str}</span>`)
+                        }))
+                    }/>
                 )
             }
+            {
+                !hasSuggestion && < SearchKey/>
+            }
 
-            <ul className={styles.history}>
-                <li>
-                    历史记录
-                    <GeekIcon type={"iconbtn_del"}/>
-                </li>
-                <li>
-                    angular <GeekIcon type={"iconbtn_essay_close"}/>
-                </li>
-                <li>
-                    postMessage <GeekIcon type={"iconbtn_essay_close"}/>
-                </li>
-            </ul>
+
         </div>
     );
 }

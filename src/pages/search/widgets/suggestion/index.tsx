@@ -7,7 +7,6 @@ interface Props {
     suggestions: { origin: string; name: string }[];
 }
 export default function Suggestion({suggestions}:Props) {
-    console.log(suggestions,'ssss')
     return (
         <ul className={styles.suggest}>
             {
