@@ -9,6 +9,7 @@ import AuthRoute from "@router/authRoute";
 import Personal from "@pages/personal";
 import Search from "@pages/search";
 import SearchResult from "@pages/searchResult";
+import Article from "@pages/article";
 
 
 export const router = createBrowserRouter([
@@ -44,7 +45,11 @@ export const router = createBrowserRouter([
     },
     {
         path:'/search/:key',element:<SearchResult />
+    },
+    {
+        path:'/article/:id',element:<Article />
     }
+
 ])
 
 

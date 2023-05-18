@@ -46,8 +46,6 @@ export default function SearchResult() {
             setPage(x => x + 1)
             // 记录服务端响应的搜索结果总共的数量
             totalRef.current = res.data.total_count
-            console.log(totalRef.current,'totalref')
-            console.log(newAccount,'newAccount')
             // 是否还有更多 总数 > 现在本地
             setHasMore(totalRef.current > newAccount )
         })

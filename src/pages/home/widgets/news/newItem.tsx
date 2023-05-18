@@ -1,6 +1,6 @@
 import React from 'react';
 import {GeekIcon} from "@shared/geekIcon";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import styles from '@styles/news.module.less'
 import classNames from "classnames";
 import dayjs from "dayjs";
@@ -11,12 +11,13 @@ interface Props {
 }
 
 function NewItem({news}: Props) {
+    const navigate = useNavigate()
     return (
         <li className={classNames({
             [styles.hasOnePicture]: news.cover.type === 1,
             [styles.hasMorePicture]: news.cover.type > 1
         })}>
-            <div className={styles.main}>
+            <div onClick={() => {navigate(`/article/${news.art_id}`)} } className={styles.main}>
                 <Link className={styles.title} to={"/"}>
                     {news.title}
                 </Link>
