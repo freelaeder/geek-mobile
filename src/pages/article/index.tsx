@@ -12,6 +12,7 @@ import classNames from "classnames";
 import {useInView} from "react-intersection-observer";
 import 'highlight.js/styles/atom-one-dark.css'
 import Followbtn from "@pages/article/followbtn";
+import Collect from "@pages/article/collect";
 
 export default function Article() {
     const id = useParams().id!
@@ -189,10 +190,12 @@ export default function Article() {
                         <GeekIcon type={"iconbtn_like2"}/>
                         <span>点赞</span>
                     </div>
-                    <div className={styles.item}>
-                        <GeekIcon type={"iconbtn_collect"}/>
-                        <span>收藏</span>
-                    </div>
+                    {
+                        isSuccess && (
+                            <Collect id={data.data.art_id } isCollect={data.data.is_collected}  />
+                        )
+                    }
+
                     <div className={styles.item}>
                         <GeekIcon type={"iconbtn_share"}/>
                         <span>分享</span>

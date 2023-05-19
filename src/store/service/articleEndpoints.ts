@@ -13,25 +13,37 @@ const articleEndpoints = apiService.enhanceEndpoints({
             }),
             providesTags: ['article']
         }),
-        // 关注
+        // 关注用户
         followUser: build.mutation({
-            query: (id) => ({
-                url: '/user/followings',
-                method: 'POST',
-                body: {
-                    target: id
-                }
+            query: (id: string) => ({
+                url: "/user/followings",
+                method: "POST",
+                body: { target: id },
             }),
-            invalidatesTags: ['article']
+            invalidatesTags: ["article"],
         }),
-        // 取消关注
+        // 取消关注用户
         unFollowUser: build.mutation({
-            query: (target) => ({
-                url: `/user/followings/${target}`,
-                method: 'DELETE'
+            query: (id: string) => ({ url: `/user/followings/${id}`, method: "DELETE" }),
+            invalidatesTags: ["article"],
+        }),
+        // 收藏文章
+        collectArticle: build.mutation({
+            query: (id: string) => ({
+                url: "/article/collections",
+                method: "POST",
+                body: { target: id },
             }),
-            invalidatesTags: ['article']
-        })
+            invalidatesTags: ["article"],
+        }),
+        // 取消收藏文章
+        unCollectArticle: build.mutation({
+            query: (id: string) => ({
+                url: `/article/collections/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["article"],
+        }),
     })
 })
 
@@ -39,5 +51,7 @@ const articleEndpoints = apiService.enhanceEndpoints({
 export const {
     useRequestArticleQuery,
     useFollowUserMutation,
-    useUnFollowUserMutation
+    useUnFollowUserMutation,
+    useCollectArticleMutation,
+    useUnCollectArticleMutation
 } = articleEndpoints

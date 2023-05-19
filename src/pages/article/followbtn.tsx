@@ -14,7 +14,7 @@ function Followbtn({isFollow, userId}: Props) {
 
     const requestFollow = () => {
         console.log(isFollow,'isFollow')
-        !isFollow ? unfollow(userId) : follow(userId)
+        isFollow ? unfollow(userId) : follow(userId)
     }
     return (
         <button onClick={requestFollow}> {isFollow ? '已关注' : '关注'} </button>
