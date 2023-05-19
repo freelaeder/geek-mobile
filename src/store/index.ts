@@ -9,6 +9,7 @@ import {guestChannelSlice} from "@slice/guestChannel";
 import {newsSlice} from "@slice/newsSlice";
 import {searchKeySlice} from "@slice/searchKey";
 import {searchResultSlice} from "@slice/searchResultSlice";
+import {commentSlice} from "@slice/commentSlice";
 // 持久化 - token
 const persistCredentialsReducer = persistReducer(
     {key: 'credentialsReducer', storage},
@@ -30,7 +31,8 @@ export const store = configureStore({
         [guestChannelSlice.name]: persistChannelReducer,
         [newsSlice.name]:newsSlice.reducer,
         [searchKeySlice.name]:persistSearchKey,
-        [searchResultSlice.name]:searchResultSlice.reducer
+        [searchResultSlice.name]:searchResultSlice.reducer,
+        [commentSlice.name]:commentSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         // serializableCheck:false 第一种解决

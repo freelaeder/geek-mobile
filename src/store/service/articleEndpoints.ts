@@ -18,13 +18,13 @@ const articleEndpoints = apiService.enhanceEndpoints({
             query: (id: string) => ({
                 url: "/user/followings",
                 method: "POST",
-                body: { target: id },
+                body: {target: id},
             }),
             invalidatesTags: ["article"],
         }),
         // 取消关注用户
         unFollowUser: build.mutation({
-            query: (id: string) => ({ url: `/user/followings/${id}`, method: "DELETE" }),
+            query: (id: string) => ({url: `/user/followings/${id}`, method: "DELETE"}),
             invalidatesTags: ["article"],
         }),
         // 收藏文章
@@ -32,7 +32,7 @@ const articleEndpoints = apiService.enhanceEndpoints({
             query: (id: string) => ({
                 url: "/article/collections",
                 method: "POST",
-                body: { target: id },
+                body: {target: id},
             }),
             invalidatesTags: ["article"],
         }),
@@ -44,6 +44,27 @@ const articleEndpoints = apiService.enhanceEndpoints({
             }),
             invalidatesTags: ["article"],
         }),
+        // 点赞
+        likeArticle: build.mutation({
+            query: (id: string) => ({
+                url: '/article/likings',
+                method: 'post',
+                body: {
+                    target: id
+                }
+            }),
+            invalidatesTags: ['article']
+        }),
+        // 取消点赞
+        unLikeArticle: build.mutation({
+            query: (target: string) => ({
+                url: `/article/likings/${target}`,
+                method: 'delete'
+            }),
+            invalidatesTags:['article']
+        })
+
+
     })
 })
 
@@ -53,5 +74,7 @@ export const {
     useFollowUserMutation,
     useUnFollowUserMutation,
     useCollectArticleMutation,
-    useUnCollectArticleMutation
+    useUnCollectArticleMutation,
+    useLikeArticleMutation,
+    useUnLikeArticleMutation
 } = articleEndpoints

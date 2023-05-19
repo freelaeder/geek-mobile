@@ -13,6 +13,12 @@ import {useInView} from "react-intersection-observer";
 import 'highlight.js/styles/atom-one-dark.css'
 import Followbtn from "@pages/article/followbtn";
 import Collect from "@pages/article/collect";
+import LikeArticle from "@pages/article/likeArticle";
+import {useTypedDispatch, useTypedSelector} from "@store/index";
+import {commentSelectors, saveComment} from "@slice/commentSlice";
+import {useLazyRequestCommentsQuery} from "@service/commentEndpoints";
+import CommentItem from "@pages/article/commentItem";
+import Infinite from "@shared/infinite";
 
 export default function Article() {
     const id = useParams().id!
@@ -29,6 +35,28 @@ export default function Article() {
     const [showComment, setShowComment] = useState(false);
     // 用于获取评论元素对象
     const commentRef = useRef<HTMLDivElement | null>(null);
+
+    // 获取评论列表数据
+    const allComments = useTypedSelector(commentSelectors.selectAll)
+    // 评论分页偏移量
+    const [offset, setOffset] = useState<string | undefined>();
+    // 是否有更多评论可以加载
+    const [hasMore, setHasMore] = useState(true);
+    // 发送请求获取评论
+    const [requestComment,{data:commentResponse}]  = useLazyRequestCommentsQuery()
+    const dispatch  = useTypedDispatch()
+    // 用于加载评论
+    const loadMore = () => {
+        return requestComment({ type:'a',source:id,limit:10,offset }).unwrap().then( res => {
+            // 保存评论列表
+            dispatch(saveComment(res.data.results))
+            // 如果不两者相等说明没有更多数据可以加载
+            setHasMore(res.data.end_id !== res.data.last_id);
+            // 设置分页偏移量
+            setOffset(res.data.last_id);
+        })
+    }
+
 
     // 检测是否显示评论区域
     useEffect(() => {
@@ -118,57 +146,10 @@ export default function Article() {
                                         </div>
                                     )
                                 }
-
-                                <div className={styles.item}>
-                                    <div className={styles.commentator}>
-                                        <div className={styles.avatar}>
-                                            <img
-                                                src="http://pic.imeitou.com/uploads/allimg/160616/3-160616224043.jpg"
-                                                alt=""
-                                            />
-                                            <span>Wen Yahui</span>
-                                        </div>
-                                        <div className={styles.like}>
-                                            <span>1090</span>
-                                            <GeekIcon type={"iconbtn_like"}/>
-                                        </div>
-                                    </div>
-                                    <div className={styles.discuss}>
-                                        现在实现的应该是类似于大脑信号的输出，有没有可能以后实现脑接口信号的输入，从此人类从一代一代知识的传递变成知识的直接下载，学习好累呀。
-                                    </div>
-                                    <div className={styles.bottom}>
-                                        <div className={styles.reply}>
-                                            <button>2回复 &gt;</button>
-                                            <span>2小时前</span>
-                                        </div>
-                                        <GeekIcon type={"iconbtn_essay_close"} className={styles.close}/>
-                                    </div>
-                                </div>
-                                <div className={styles.item}>
-                                    <div className={styles.commentator}>
-                                        <div className={styles.avatar}>
-                                            <img
-                                                src="http://pic.imeitou.com/uploads/allimg/160616/3-160616224043.jpg"
-                                                alt=""
-                                            />
-                                            <span>Wen Yahui</span>
-                                        </div>
-                                        <div className={styles.like}>
-                                            <span>1090</span>
-                                            <GeekIcon type={"iconbtn_like_sel"}/>
-                                        </div>
-                                    </div>
-                                    <div className={styles.discuss}>
-                                        现在实现的应该是类似于大脑信号的输出，有没有可能以后实现脑接口信号的输入，从此人类从一代一代知识的传递变成知识的直接下载，学习好累呀。
-                                    </div>
-                                    <div className={styles.bottom}>
-                                        <div className={styles.reply}>
-                                            <button>2回复 &gt;</button>
-                                            <span>2小时前</span>
-                                        </div>
-                                        <GeekIcon type={"iconbtn_essay_close"} className={styles.close}/>
-                                    </div>
-                                </div>
+                                {
+                                    allComments.map(item => <CommentItem key={item.com_id} comment={item } /> )
+                                }
+                                <Infinite hasMore={hasMore} loadMore={loadMore} />
                             </div>
 
 
@@ -181,15 +162,12 @@ export default function Article() {
                     <FillinOutline className={styles.icon}/>
                     <span>去评论</span>
                 </div>
-                <div onClick={() => setShowComment(prevState => !prevState)} className={styles.icons}>
-                    <div className={styles.item}>
+                <div  className={styles.icons}>
+                    <div onClick={() => setShowComment(prevState => !prevState)} className={styles.item}>
                         <GeekIcon type={"iconbtn_comment"}/>
                         <span>评论</span>
                     </div>
-                    <div className={styles.item}>
-                        <GeekIcon type={"iconbtn_like2"}/>
-                        <span>点赞</span>
-                    </div>
+                    <LikeArticle id={data.data.art_id} like={data.data.attitude} />
                     {
                         isSuccess && (
                             <Collect id={data.data.art_id } isCollect={data.data.is_collected}  />
