@@ -77,7 +77,7 @@ export default function Mine() {
                     <GeekIcon className={styles.icon} type="iconbtn_feedback"/>
                     <span>用户反馈</span>
                 </Link>
-                <Link to="/">
+                <Link to="/chat">
                     <GeekIcon className={styles.icon} type="iconbtn_xiaozhitongxue"/>
                     <span>小智同学</span>
                 </Link>

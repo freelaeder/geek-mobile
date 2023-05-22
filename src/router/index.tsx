@@ -10,6 +10,7 @@ import Personal from "@pages/personal";
 import Search from "@pages/search";
 import SearchResult from "@pages/searchResult";
 import Article from "@pages/article";
+import Chat from "@pages/chat";
 
 
 export const router = createBrowserRouter([
@@ -48,7 +49,11 @@ export const router = createBrowserRouter([
     },
     {
         path:'/article/:id',element:<Article />
+    },
+    {
+        path:'/chat',element:<Chat />
     }
+
 
 ])
 

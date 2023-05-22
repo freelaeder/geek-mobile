@@ -1,5 +1,5 @@
 // src/pages/article/index.tsx
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import Back from "@shared/back";
 import {GeekIcon} from "@shared/geekIcon";
 import {FillinOutline} from "antd-mobile-icons";
@@ -15,10 +15,11 @@ import Followbtn from "@pages/article/followbtn";
 import Collect from "@pages/article/collect";
 import LikeArticle from "@pages/article/likeArticle";
 import {useTypedDispatch, useTypedSelector} from "@store/index";
-import {commentSelectors, saveComment} from "@slice/commentSlice";
+import {clearComment, commentSelectors, saveComment} from "@slice/commentSlice";
 import {useLazyRequestCommentsQuery} from "@service/commentEndpoints";
 import CommentItem from "@pages/article/commentItem";
 import Infinite from "@shared/infinite";
+import PublishComment from "@pages/article/publishComment";
 
 export default function Article() {
     const id = useParams().id!
@@ -57,6 +58,12 @@ export default function Article() {
         })
     }
 
+    // 重置评论列表
+    const resetComments = useCallback(() => {
+        setOffset(undefined);
+        setHasMore(true);
+        dispatch(clearComment());
+    }, [dispatch]);
 
     // 检测是否显示评论区域
     useEffect(() => {
@@ -158,10 +165,7 @@ export default function Article() {
                 }
             </div>
             <div className={styles.bar}>
-                <div className={styles.sofa}>
-                    <FillinOutline className={styles.icon}/>
-                    <span>去评论</span>
-                </div>
+                <PublishComment id={data.data.art_id} resetComments={resetComments} />
                 <div  className={styles.icons}>
                     <div onClick={() => setShowComment(prevState => !prevState)} className={styles.item}>
                         <GeekIcon type={"iconbtn_comment"}/>
