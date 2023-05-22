@@ -18,7 +18,7 @@ const commentEndpoints = apiService.injectEndpoints({
         // content: 评论内容
         // art_id: 文章id, 对评论内容发表回复时需要传递此参数, 对文章进行评论不要传此参数
         publishComments: build.mutation<GeekResponse<{ com_id: string, target: string, art_id: string }>, {
-            target: string, content: string, art_id: string
+            target: string, content: string, art_id?: string
         }>({
             query: (body) => ({
                 url: '/comments',

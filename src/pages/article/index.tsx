@@ -2,7 +2,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import Back from "@shared/back";
 import {GeekIcon} from "@shared/geekIcon";
-import {FillinOutline} from "antd-mobile-icons";
 import {Skeleton} from "antd-mobile";
 import styles from "@styles/article.module.less";
 import {useParams} from "react-router-dom";
@@ -78,6 +77,10 @@ export default function Article() {
             articleRef.current?.scrollTo({top: 0, behavior: "smooth"});
         }
     }, [showComment]);
+    // 组件挂载完成之后先清空本地存储的评论列表
+    useEffect(() => {
+        dispatch(clearComment());
+    }, [dispatch]);
     if (!isSuccess) return null
     return (
         <>
@@ -154,7 +157,7 @@ export default function Article() {
                                     )
                                 }
                                 {
-                                    allComments.map(item => <CommentItem key={item.com_id} comment={item } /> )
+                                    allComments.map(item => <CommentItem resetComments={resetComments} key={item.com_id} comment={item } /> )
                                 }
                                 <Infinite hasMore={hasMore} loadMore={loadMore} />
                             </div>
